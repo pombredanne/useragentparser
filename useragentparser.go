@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"net/http"
+	"strings"
 
 	"github.com/PuerkitoBio/throttled"
 	"github.com/PuerkitoBio/throttled/store"
@@ -36,11 +37,37 @@ func WriteJSON(w http.ResponseWriter, data interface{}) {
 	w.Write(js)
 }
 
+func ipAddrFromRemoteAddr(s string) string {
+	idx := strings.LastIndex(s, ":")
+	if idx == -1 {
+		return s
+	}
+	return s[:idx]
+}
+
+func getIpAddress(r *http.Request) string {
+	hdr := r.Header
+	hdrRealIp := hdr.Get("X-Real-Ip")
+	hdrForwardedFor := hdr.Get("X-Forwarded-For")
+	if hdrRealIp == "" && hdrForwardedFor == "" {
+		return ipAddrFromRemoteAddr(r.RemoteAddr)
+	}
+	if hdrForwardedFor != "" {
+		// X-Forwarded-For is potentially a list of addresses separated with ","
+		parts := strings.Split(hdrForwardedFor, ",")
+		for i, p := range parts {
+			parts[i] = strings.TrimSpace(p)
+		}
+		return parts[0]
+	}
+	return hdrRealIp
+}
+
 var parser *uaparser.Parser
 
 func main() {
 	isThrottled := true
-	th := throttled.RateLimit(throttled.PerHour(3600), &throttled.VaryBy{RemoteAddr: true}, store.NewMemStore(1000))
+	th := throttled.RateLimit(throttled.PerHour(3600), &throttled.VaryBy{Custom: getIpAddress}, store.NewMemStore(1000))
 	regexFile := "regexes.yaml"
 	parser = uaparser.New(regexFile)
 	r := mux.NewRouter()
