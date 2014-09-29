@@ -6,8 +6,6 @@ FROM ubuntu
 MAINTAINER Thomas Sileo
 EXPOSE 3000
 WORKDIR /data/useragentparser
-RUN apt-get update
-RUN apt-get -y install wget
-RUN wget https://raw.githubusercontent.com/tobie/ua-parser/master/regexes.yaml
+ADD ./regexes.yaml /data/useragentparser/regexes.yaml
 ADD ./useragentparser /opt/useragentparser
 ENTRYPOINT /opt/useragentparser
