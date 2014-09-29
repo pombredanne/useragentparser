@@ -50,8 +50,8 @@ func main() {
 		thandler = th.Throttle(thandler)
 	}
 	r.Handle("/api", thandler)
+	r.Handle("/", http.FileServer(http.Dir("public")))
 	http.Handle("/", r)
-	http.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir("public"))))
 	http.ListenAndServe(":3000", nil)
 
 }

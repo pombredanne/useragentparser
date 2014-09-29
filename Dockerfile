@@ -6,6 +6,7 @@ FROM ubuntu
 MAINTAINER Thomas Sileo
 EXPOSE 3000
 WORKDIR /data/useragentparser
+ADD ./public /data/useragentparser/public
 ADD ./regexes.yaml /data/useragentparser/regexes.yaml
 ADD ./useragentparser /opt/useragentparser
 ENTRYPOINT /opt/useragentparser
