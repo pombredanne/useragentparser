@@ -14,6 +14,23 @@ import (
 	"github.com/tobie/ua-parser/go/uaparser" // You could change this to a github repo as well
 )
 
+type UserAgentResult struct {
+	UAString  string `json:"ua_string"`
+	UAVersion string `json:"ua_version"`
+	UAMajor   string `json:"ua_major"`
+	UAMinor   string `json:"ua_minor"`
+	UAPatch   string `json:"ua_patch"`
+
+	OSString     string `json:"os_string"`
+	OSVersion    string `json:"os_version"`
+	OSMajor      string `json:"os_major"`
+	OSMinor      string `json:"os_minor"`
+	OSPatch      string `json:"os_patch"`
+	OSPatchMinor string `json:"os_patch_minor"`
+
+	DeviceFamily string `json:"device_family"`
+}
+
 func apiHandler() func(http.ResponseWriter, *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Access-Control-Expose-Headers", "X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset")
@@ -26,7 +43,21 @@ func apiHandler() func(http.ResponseWriter, *http.Request) {
 			ip := getIpAddress(r)
 			log.Printf("API request by %v with ua=%v", ip, ua)
 			client := parser.Parse(ua)
-			WriteJSON(w, client)
+			res := &UserAgentResult{
+				UAString:     client.UserAgent.ToString(),
+				UAVersion:    client.UserAgent.ToVersionString(),
+				UAMajor:      client.UserAgent.Major,
+				UAMinor:      client.UserAgent.Minor,
+				UAPatch:      client.UserAgent.Patch,
+				OSString:     client.Os.ToString(),
+				OSVersion:    client.Os.ToVersionString(),
+				OSMajor:      client.Os.Major,
+				OSMinor:      client.Os.Minor,
+				OSPatch:      client.Os.Patch,
+				OSPatchMinor: client.Os.PatchMinor,
+				DeviceFamily: client.Device.Family,
+			}
+			WriteJSON(w, res)
 		default:
 			w.WriteHeader(http.StatusMethodNotAllowed)
 		}

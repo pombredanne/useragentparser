@@ -6,7 +6,6 @@
         <title>User agent parser | Basiclytics</title>
         <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/uikit/2.10.0/css/uikit.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r224/prettify.css" />
-        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/uikit/2.10.0/css/addons/uikit.addons.min.css">
         <style type="text/css">
 	</style>
     </head>
@@ -96,22 +95,18 @@ $ curl -G http://useragentparser.basiclytics.com/api --data-urlencode "ua=Mozill
 
 <pre class="prettyprint lang-json">
 {
-  "UserAgent": {
-    "Family": "Firefox",
-    "Major": "32",
-    "Minor": "0",
-    "Patch": ""
-  },
-  "Os": {
-    "Family": "Ubuntu",
-    "Major": "",
-    "Minor": "",
-    "Patch": "",
-    "PatchMinor": ""
-  },
-  "Device": {
-    "Family": "Other"
-  }
+    "ua_string": "Firefox 32.0",
+    "ua_version": "32.0",
+    "ua_major": "32",
+    "ua_minor": "0",
+    "ua_patch": "",
+    "os_string": "Ubuntu",
+    "os_version": "",
+    "os_major": "",
+    "os_minor": "",
+    "os_patch": "",
+    "os_patch_minor": "",
+    "device_family": "Other"
 }
 </pre>
 
@@ -130,7 +125,6 @@ $ curl -G http://useragentparser.basiclytics.com/api --data-urlencode "ua=Mozill
         </div>
 	</div>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    	<script src="//cdnjs.cloudflare.com/ajax/libs/uikit/2.10.0/js/uikit.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r224/prettify.js"></script>
     
 <script type="text/javascript">
