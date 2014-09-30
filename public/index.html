@@ -35,12 +35,11 @@
 <strong>useragentparser</strong> is an open source web service for parsing user agent strings into meaningful information.</p>
 <iframe src="http://ghbtns.com/github-btn.html?user=basiclytics&amp;repo=useragentparser&amp;type=watch&amp;count=true&amp;size=large" allowtransparency="true" scrolling="0" width="160px" frameborder="0" height="30px"></iframe>
 <iframe src="http://ghbtns.com/github-btn.html?user=basiclytics&amp;repo=useragentparser&amp;type=fork&amp;count=true&amp;size=large" allowtransparency="true" scrolling="0" width="160px" frameborder="0" height="30px"></iframe>
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-via="trucsdedev" data-size="large">Tweet</a>
+<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://useragentparser.basiclytics.com" data-via="trucsdedev" data-size="large">Tweet</a>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 <p>It extracts the following informations from user agent strings:</p>
 <ul>
-<li>Browser</li>
+<li>User agent</li>
 <li>Operating system</li>
 <li>Device</li>
 </ul>
@@ -64,7 +63,7 @@ User agent parser is written in <a href="http://golang.org/">Go</a> and built on
 <h2>API Documentation</h2>
 
 <h3>API endpoint</h3>
-<pre>http://localhost:3000/api</pre>
+<pre>http://useragentparser.basiclytics.com/api</pre>
 <h3>Format</h3>
 <p>All calls are returned in JSON.</p>
 <h3>Rate limiting</h3>
@@ -90,7 +89,7 @@ User agent parser is written in <a href="http://golang.org/">Go</a> and built on
 </ul>
 <h3>Example request</h3>
 <pre>
-$ curl -G http://localhost:3000/api --data-urlencode "ua=Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:32.0) Gecko/20100101 Firefox/32.0"
+$ curl -G http://useragentparser.basiclytics.com/api --data-urlencode "ua=Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:32.0) Gecko/20100101 Firefox/32.0"
 </pre>
 
 <h4>Response</h4>
