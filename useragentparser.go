@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 	"strings"
 
@@ -11,7 +12,7 @@ import (
 	"github.com/tobie/ua-parser/go/uaparser" // You could change this to a github repo as well
 )
 
-func testHandler() func(http.ResponseWriter, *http.Request) {
+func apiHandler() func(http.ResponseWriter, *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Access-Control-Expose-Headers", "X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset")
 		w.Header().Set("Access-Control-Allow-Origin", "*")
@@ -19,7 +20,10 @@ func testHandler() func(http.ResponseWriter, *http.Request) {
 		defer r.Body.Close()
 		switch r.Method {
 		case "GET":
-			client := parser.Parse(r.URL.Query().Get("ua"))
+			ua := r.URL.Query().Get("ua")
+			ip := getIpAddress(r)
+			log.Printf("API request by %v with ua=%v", ip, ua)
+			client := parser.Parse(ua)
 			WriteJSON(w, client)
 		default:
 			w.WriteHeader(http.StatusMethodNotAllowed)
@@ -72,7 +76,7 @@ func main() {
 	parser = uaparser.New(regexFile)
 	r := mux.NewRouter()
 	var thandler http.Handler
-	thandler = http.HandlerFunc(testHandler())
+	thandler = http.HandlerFunc(apiHandler())
 	if isThrottled {
 		thandler = th.Throttle(thandler)
 	}
