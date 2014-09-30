@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"os"
+	"strconv"
 	"strings"
 
 	"github.com/PuerkitoBio/throttled"
@@ -70,7 +72,9 @@ func getIpAddress(r *http.Request) string {
 var parser *uaparser.Parser
 
 func main() {
-	isThrottled := true
+	isThrottled, _ := strconv.ParseBool(os.Getenv("USERAGENTPARSER_THROTTLED"))
+	serveDocs, _ := strconv.ParseBool(os.Getenv("USERAGENTPARSER_DOCS"))
+	log.Printf("isThrottled=%v, serveDocs=%v", isThrottled, serveDocs)
 	th := throttled.RateLimit(throttled.PerHour(3600), &throttled.VaryBy{Custom: getIpAddress}, store.NewMemStore(1000))
 	regexFile := "regexes.yaml"
 	parser = uaparser.New(regexFile)
